@@ -1,0 +1,49 @@
+﻿@using CodeCloude.Models
+@model UserSubscriptionVM;
+
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="">
+    <div class="">
+
+        <h2>حذف اشتراك</h2>
+
+        <form asp-controller="UserSubscription" asp-action="Delete" class="form-group ">
+
+            <div asp-validation-summary="All;" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" disabled class="form-control" />
+
+            <label>الاشتراك </label>
+            <input type="Text" asp-for="Subscriptions.Subscription_Title" disabled class="form-control" />
+            <br />
+            <br />
+
+            <label>المستخدم </label>
+            <input type="Text" asp-for="ApplicationUser.FullName" disabled class="form-control" />
+            <br />
+            <br />
+
+            <label> E-mail المستخدم </label>
+            <input type="Text" asp-for="ApplicationUser.Email" disabled class="form-control" />
+            <br />
+            <br />
+
+
+            
+            <center>
+                <input type="submit" value="Delete" class="btn btn-danger" />
+
+            </center>
+        </form>
+        <center>
+            <a asp-controller="UserSubscription" asp-action="Index" class="btn btn-success">العودة</a>
+        </center>
+    </div>
+</section>
+

@@ -1,0 +1,62 @@
+﻿@using CodeCloude.Models
+@model IEnumerable<CountriesVM>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Scroll - horizontal and vertical table -->
+<section id="horizontal-vertical">
+    <div class="dt-buttons btn-group">
+        <a asp-action="Create" asp-controller="Countries" class="btn btn-outline-primary" style="margin:20px">
+            <span><i class="feather icon-plus"></i></span>
+        </a>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">الدول</h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body card-dashboard">
+                        <div class="table-responsive">
+                            <table class="table nowrap scroll-horizontal-vertical">
+                                <thead>
+                                    <tr>
+                                        <th>الدولة</th>
+                                        <th>صورة العلم</th>
+
+
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Cont_Name</td>
+                                            <td>
+                                                <img style="width:50px;Height:50px" src="~/Uploads/Countries/@item.Cont_FlagUrl" alt="Card image cap" style="width:100%; height:100% ; border-radius:5px">
+                                            </td>
+                                            <td class="product-action">
+                                                <a asp-action="Edite" asp-controller="Countries" asp-route-id="@item.Id">
+                                                    <span class="action-edit"><i class="feather icon-edit"></i></span>
+                                                </a>
+                                                <a asp-action="Delete" asp-controller="Countries" asp-route-id="@item.Id">
+                                                    <span class="action-delete"><i class="feather icon-trash"></i></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ Scroll - horizontal and vertical table -->

@@ -1,0 +1,44 @@
+﻿@using CodeCloude.Models
+@model Terms_ConditionsVM;
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<!-- Basic Vertical form layout section start -->
+<section id="basic-vertical-layouts">
+    <div class="row match-height">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">تعديل الشروط والاحكام </h4>
+            </div>
+            <div class="card-content">
+                <div class="card-body">
+                    <form class="form form-vertical" asp-action="Edite" asp-controller="TermsConditions" enctype="multipart/form-data">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="first-name-vertical">التفاصيل</label>
+                                        <input type="text" id="first-name-vertical" class="form-control" asp-for="Details" placeholder="Term Details">
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary mr-1 mb-1">حفظ</button>
+                                    <a asp-action="Index" asp-controller="TermsConditions" class="btn btn-outline-primary">العودة</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+

@@ -1,0 +1,52 @@
+﻿@using CodeCloude.Models
+@model IEnumerable<BankDetailsVM>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Scroll - horizontal and vertical table -->
+<section id="horizontal-vertical">
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">تفاصيل حساب الدفع</h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body card-dashboard">
+                      <div class="table-responsive">
+                            <table class="table nowrap scroll-horizontal-vertical">
+                                <thead>
+                                    <tr> 
+                                        <th>رقم الحساب</th>
+                                      
+
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.accountNumber</td>
+                                            <td class="product-action">
+                                                <a asp-action="Edite" asp-controller="BankDetails" asp-route-id="@item.Id">
+                                                    <span class="action-edit"><i class="feather icon-edit"></i></span>
+                                                </a>
+                                               
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ Scroll - horizontal and vertical table -->

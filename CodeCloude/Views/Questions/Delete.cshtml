@@ -1,0 +1,46 @@
+﻿@using CodeCloude.Models
+@model QuestionsVM;
+
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="">
+    <div class="">
+
+        <h2>حذف السؤال</h2>
+
+        <form asp-controller="Questions" asp-action="Delete" class="form-group ">
+
+            <div asp-validation-summary="All;" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" disabled class="form-control" />
+
+            <label>السؤال  </label>
+            <input type="Text" asp-for="Question" disabled class="form-control" />
+            <br />
+            <br />
+            <label>الاجابة  </label>
+            <input type="Text" asp-for="Answer" disabled class="form-control" />
+            <br />
+            <br />
+
+
+
+            <center>
+                <input type="submit" value="Delete" class="btn btn-danger" />
+                <a asp-controller="Questions" asp-action="Edite" asp-route-id="@Model.Id" class="btn btn-primary">تعديل</a>
+
+            </center>
+            <br />
+            <br />
+        </form>
+        <center>
+            <a asp-controller="Questions" asp-action="Index" class="btn btn-success">العودة</a>
+        </center>
+    </div>
+</section>
+

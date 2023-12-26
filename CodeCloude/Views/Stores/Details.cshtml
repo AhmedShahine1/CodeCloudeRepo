@@ -1,0 +1,124 @@
+﻿@using CodeCloude.Models
+@model StoresVM
+@{
+    ViewData["Title"] = "Details";
+}
+<!-- Scroll - horizontal and vertical table -->
+<section id="horizontal-vertical">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> </h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body card-dashboard">
+                        <div class="table-responsive">
+                            <table class="table nowrap scroll-horizontal-vertical">
+                                <thead>
+                                    <tr>
+                                        <th> بيانات المتجر</th>
+                                    </tr>
+
+
+
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td> اسم المتجر</td>
+                                        <td>@Model.Stor_Title </td>
+                                    </tr>
+                                      <tr>
+                                        <td> عنوان المتجر</td>
+                                        <td>@Model.Stor_Address </td>
+                                    </tr>
+
+                            
+                                      <tr>
+                                        <td> رابط المتجر</td>
+                                        <td> <a href="@Model.Stor_Link">اضغط هنا </a></td>
+                                    </tr>
+
+                            
+                                    <tr>
+                                        <td> صورة المتجر</td>
+                                        <td>  <img class="card-img-top img-fluid" src="~/Uploads/Stores/@Model.Stor_ImgUrl" alt="Card image cap" style="width:100px;height:100px"></td>
+                                    </tr>
+
+                            
+
+                                    <tr>
+                                        <td> تفاصيل المتجر</td>
+                                        <td>@Model.Stor_Deteils </td>
+                                    </tr>
+
+                            
+
+                                    <tr>
+                                        <td> عرض المتجر</td>
+                                        <td>@Model.Stor_Offer </td>
+                                    </tr>
+                                   
+                                    <tr>
+                                        <td>كود الخصم </td>
+                                        <td>@Model.Stor_SaleCode </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td> القسم </td>
+                                        <td>@Model.Categories.Categ_Name </td>
+                                    </tr>
+                                    <tr>
+                                        <td>   البلد </td>
+                                        <td>@Model.Countries.Cont_Name </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td> الهاتف </td>
+                                        <td>@Model.Stor_PhoneNumber </td>
+                                    </tr>
+
+
+                                   
+                                    <tr>
+                                        <td> الهاتف </td>
+                                        <td>@Model.Stor_PhoneNumber </td>
+                                    </tr>
+
+
+                                   
+                                    <tr>
+                                        <td> المميزه </td>
+                                        @if (Model.IsSpecial == true)
+                                        {
+                                            <td>
+                                                <a asp-controller="Stores" asp-action="DeletteSpecial" asp-route-id="@Model.Id" class="btn btn-danger">حذف </a>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a asp-controller="Stores" asp-action="CreateSpecial" asp-route-id="@Model.Id" class="btn btn-primary">اضافه </a>
+                                            </td>
+                                        }
+                                    </tr>
+
+
+                                   
+
+                                </tbody>
+                            </table>
+
+                            <center>
+                                <a asp-controller="Stores" asp-action="Index" class="btn btn-info">العودة</a>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ Scroll - horizontal and vertical table -->

@@ -1,0 +1,93 @@
+﻿@using CodeCloude.Models
+@model ContcatUsVM;
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Basic Vertical form layout section start -->
+<section id="basic-vertical-layouts">
+    <div class="row match-height">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">تعديل</h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-vertical" asp-action="Edite" asp-controller="ContcatUs" enctype="multipart/form-data">
+
+                            <input type="hidden" asp-for="Id" class="form-control" />
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical"> رابط الفيسبوك</label>
+                                            <input type="text" id="first-name-vertical" class="form-control" asp-for="Faceebokk_Link" placeholder="رابط الفيسبوك">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">رابط تويتر </label>
+                                            <input type="text" id="first-name-vertical" class="form-control" asp-for="Twitter_Link" placeholder="رابط تويتر">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">رابط الانستجرام</label>
+                                            <input type="text" id="first-name-vertical" class="form-control" asp-for="Insat_Link" placeholder="رابط الانستجرام">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">رابط لينكدن</label>
+                                            <input type="text" id="first-name-vertical" class="form-control" asp-for="LinkdLin_Link" placeholder="رابط لينكدن">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">اهدافنا </label>
+                                            <input type="text" id="first-name-vertical" class="form-control" asp-for="Our_Goals" placeholder="عن التطبيق">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">رؤيتنا </label>
+                                            <input type="text" id="first-name-vertical" class="form-control" asp-for="Our_Vision" placeholder="رؤيتنا">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical"> عن التطبيق</label>
+                                            <input type="text" id="first-name-vertical" class="form-control" asp-for="About_App" placeholder="عن التطبيق">
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary mr-1 mb-1">Edite</button>
+                                        <button type="reset" class="btn btn-outline-warning mr-1 mb-1">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // Basic Vertical form layout section end -->

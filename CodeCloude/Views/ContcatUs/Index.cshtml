@@ -1,0 +1,76 @@
+﻿@using CodeCloude.Models
+@model IEnumerable<ContcatUsVM>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Scroll - horizontal and vertical table -->
+<section id="horizontal-vertical">
+     <div class="dt-buttons btn-group">
+   @* <a asp-action="Create" asp-controller="Crew" class="btn btn-outline-primary" style="margin:20px">
+        <span><i class="feather icon-plus"></i></span>
+    </a>*@
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">عن التطبيق </h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body card-dashboard">
+                      <div class="table-responsive">
+                            <table class="table nowrap scroll-horizontal-vertical">
+                                <thead>
+                                    <tr>
+                                        <th>فيسبوك</th>
+                                        <th> الانستجرام</th>
+                                        <th>تويتر</th>
+                                        <th>لينكدن</th>
+
+
+
+                                        <th>اهدافنا</th>
+                                        <th>رؤيتنا</th>
+                                        <th>عن التطبيق</th>
+                                     
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td><a href="@item.Faceebokk_Link"> Facebook Link</a></td>
+                                            <td><a href="@item.Twitter_Link">Twitter Link</a></td>
+                                            <td><a href="@item.LinkdLin_Link">Linkedln Link</a></td>
+                                            <td><a href="@item.Insat_Link">Insta Link</a></td>
+
+                                            <td>@item.Our_Goals</td>
+                                            <td>@item.Our_Vision</td>
+                                            <td>@item.About_App</td>
+                                            <td>
+                                          
+
+                                            <td class="product-action">
+                                                <a asp-action="Edite" asp-controller="ContcatUs" asp-route-id="@item.Id">
+                                                    <span class="action-edit"><i class="feather icon-edit"></i></span>
+                                                </a>
+                                               @* <a asp-action="Delete" asp-controller="ContcatUs" asp-route-id="@item.Id">
+                                                    <span class="action-delete"><i class="feather icon-trash"></i></span>
+                                                </a>*@
+                                            </td>
+                                        </tr>
+                                    }    
+                             
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ Scroll - horizontal and vertical table -->

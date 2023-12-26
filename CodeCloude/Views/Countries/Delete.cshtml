@@ -1,0 +1,49 @@
+﻿@using CodeCloude.Models
+@model CountriesVM;
+
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="">
+    <div class="">
+
+        <h2>حذف الدولة</h2>
+
+        <form asp-controller="Countries" asp-action="Delete" class="form-group ">
+
+            <div asp-validation-summary="All;" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" disabled class="form-control" />
+            <input type="hidden" asp-for="Cont_FlagUrl" disabled class="form-control" />
+
+            <label>الدولة </label>
+            <input type="Text" asp-for="Cont_Name" disabled class="form-control" />
+            <br />
+            <br />
+
+            <label>صورة العلم</label>
+            <div style="width:150px;Height:150px">
+                <img src="~/Uploads/Countries/@Model.Cont_FlagUrl" alt="Card image cap" style="width:100%; height:100% ; border-radius:5px">
+            </div>
+            <br />
+            <br />
+            
+
+            <center>
+                <input type="submit" value="Delete" class="btn btn-danger" />
+                <a asp-controller="Countries" asp-action="Edite" asp-route-id="@Model.Id" class="btn btn-primary">تعديل</a>
+
+            </center>
+            <br />
+            <br />
+        </form>
+        <center>
+            <a asp-controller="Countries" asp-action="Index" class="btn btn-success">العودة</a>
+        </center>
+    </div>
+</section>
+

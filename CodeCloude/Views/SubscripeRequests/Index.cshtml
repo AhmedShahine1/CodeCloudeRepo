@@ -1,0 +1,74 @@
+﻿@using CodeCloude.Models
+
+@model IEnumerable<SubscripeRequestsVM>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Scroll - horizontal and vertical table -->
+<section id="horizontal-vertical">
+   
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">طلبات الاشتراك</h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body card-dashboard">
+                        <div class="table-responsive">
+                            <table class="table nowrap scroll-horizontal-vertical">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>اسم مقدم الطلب</th>
+                                        <th>الاشتراك</th>
+                                        <th>حاله الطلب</th>
+                                        <th>صورة الايصال</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Id</td>
+                                            <td>@item.ApplicationUser.FullName</td>
+                                            <td>@item.Subscriptions.Subscription_Title</td>
+                                            @if (item.IsAccepted==true)
+                                            {
+                                                <td>تم الموافقه علي الطلب</td>
+                                            } 
+                                            else
+                                            {
+                                                <td> الطلب قيد المراجعه</td>
+                                            }
+                                            <td>
+
+                                                <img style="width:200px;Height:200px" src="~/Uploads/SubscripeRequests/@item.imgUrl" alt="Card image cap" style="width:100%; height:100% ; border-radius:5px">
+
+                                            </td>
+                                            <td>
+                                                <a asp-controller="SubscripeRequests" asp-action="Accept" asp-route-id="@item.Id"  class="btn btn-primary">قبول</a>
+                                            </td>
+                                            <td class="product-action">
+                                               
+                                                <a asp-action="Delete" asp-controller="SubscripeRequests" asp-route-id="@item.Id">
+                                                    <span class="action-delete"><i class="feather icon-trash"></i></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ Scroll - horizontal and vertical table -->

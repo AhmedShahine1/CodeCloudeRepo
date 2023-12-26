@@ -1,0 +1,57 @@
+﻿@using CodeCloude.Models
+@model StoresVM;
+
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="">
+    <div class="">
+
+        <h2>اضافه الي المتاجر المميزه </h2>
+        <form class="form form-vertical" asp-action="CreateSpecial" asp-controller="Stores" enctype="multipart/form-data">
+            <input type="hidden" asp-for="@Model.Id" />
+            <input type="hidden" asp-for="@Model.Stor_ImgUrl" />
+            <div class="form-body">
+                <div class="row">
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="first-name-vertical">اسم المتجر</label>
+                            <input type="text" id="first-name-vertical" disabled class="form-control" asp-for="Stor_Title" placeholder="اسم المتجر">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="first-name-vertical">رابط المتجر</label>
+                            <input type="text" id="first-name-vertical" disabled class="form-control" asp-for="Stor_Link" placeholder="رابط المتجر">
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="first-name-vertical">تفاصيل المتجر</label>
+                            <input type="text" id="first-name-vertical" disabled class="form-control" asp-for="Stor_Deteils" placeholder="تفاصيل المتجر">
+                        </div>
+                    </div>
+
+
+
+                    <center>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary mr-1 mb-1">اضافه</button>
+                        </div>
+                        <a asp-controller="Stores" asp-action="Index" class="btn btn-success">العودة</a>
+                    </center>
+                  
+                </div>
+            </div>
+        </form>
+
+        
+    </div>
+</section>
+

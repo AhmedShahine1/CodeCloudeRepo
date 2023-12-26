@@ -1,0 +1,58 @@
+﻿@using CodeCloude.Models
+@model IEnumerable<privacypolicyVM>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Scroll - horizontal and vertical table -->
+<section id="horizontal-vertical">
+     <div class="dt-buttons btn-group">
+        <a asp-action="Create" asp-controller="privacypolicy" class="btn btn-outline-primary" style="margin:20px">
+        <span><i class="feather icon-plus"></i></span>
+    </a>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">سياسة الخصوصيه </h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body card-dashboard">
+                      <div class="table-responsive">
+                            <table class="table nowrap scroll-horizontal-vertical">
+                                <thead>
+                                    <tr> 
+                                        <th>التفاصيل</th>
+                                      
+
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Deatils</td>
+                                            <td class="product-action">
+                                                <a asp-action="Edite" asp-controller="privacypolicy" asp-route-id="@item.Id">
+                                                    <span class="action-edit"><i class="feather icon-edit"></i></span>
+                                                </a>
+                                                <a asp-action="Delete" asp-controller="privacypolicy" asp-route-id="@item.Id">
+                                                    <span class="action-delete"><i class="feather icon-trash"></i></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ Scroll - horizontal and vertical table -->
