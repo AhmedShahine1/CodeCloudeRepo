@@ -39,6 +39,13 @@ namespace EmailService
 
             await SendAsync(mailMessage);
         }
+        public async Task SendEmailAsync3(Message message, string email, string text2, string text)
+        {
+            var mailMessage = CreateEmailMessage3(message, email, text2, text);
+
+            await SendAsync(mailMessage);
+        }
+
         public async Task SendEmailAsync4(Message message, string email, string text2, string text)
         {
             var mailMessage = CreateEmailMessage4(message, email, text2, text);
@@ -119,7 +126,7 @@ namespace EmailService
             {
                 try
                 {
-                    await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, false);
+                    await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, true);
                     client.CheckCertificateRevocation = false;
 
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
@@ -190,6 +197,35 @@ namespace EmailService
 
 
             var bodyBuilder = new BodyBuilder { HtmlBody = CreateBody2(email, text2, text) };
+
+            if (message.Attachments != null && message.Attachments.Any())
+            {
+                byte[] fileBytes;
+                foreach (var attachment in message.Attachments)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        attachment.CopyTo(ms);
+                        fileBytes = ms.ToArray();
+                    }
+
+                    bodyBuilder.Attachments.Add(attachment.FileName, fileBytes, ContentType.Parse(attachment.ContentType));
+                }
+            }
+
+            emailMessage.Body = bodyBuilder.ToMessageBody();
+            return emailMessage;
+        }
+        private MimeMessage CreateEmailMessage3(Message message, string email, string text2, string text)
+        {
+            var emailMessage = new MimeMessage();
+            emailMessage.From.Add(new MailboxAddress(_emailConfig.From, _emailConfig.From));
+            emailMessage.To.AddRange(message.To);
+            emailMessage.Subject = message.Subject;
+
+            string body = CreateBody3(email, text2, text);
+
+            var bodyBuilder = new BodyBuilder { HtmlBody = CreateBody3(email, text2, text) };
 
             if (message.Attachments != null && message.Attachments.Any())
             {
@@ -444,6 +480,21 @@ namespace EmailService
 
 
 
+
+            return Body;
+        }
+
+        private string CreateBody3(string email, string text2, string text)
+        {
+            string Body = string.Empty;
+
+            using (StreamReader reader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Templates", "htmlpage3.html")))
+            {
+                Body = reader.ReadToEnd();
+            }
+            Body = Body.Replace("{{Subscription Type}}", text);
+
+            Body = Body.Replace("{{E-mail}}", email);
 
             return Body;
         }

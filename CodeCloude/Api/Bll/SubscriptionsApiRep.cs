@@ -28,11 +28,20 @@ namespace CodeCloude.Api.Bll
             return data;
 
         }
+
+        public IEnumerable<Subscriptions> GetById(string id)
+        {
+
+            var data = db.Subscriptions.Where(s => s.Id == Int64.Parse(id)).ToList();
+            return data;
+
+        }
+
     }
     public interface ISubscriptionsApiRep
     {
         IEnumerable<SubscriptionsVM> GetAll();
-
+        IEnumerable<Subscriptions> GetById(string id);
 
     }
 

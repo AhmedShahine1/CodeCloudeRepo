@@ -7,6 +7,7 @@ namespace EmailService
         void SendEmail(Message message, string id);
         Task SendEmailAsync(Message message, string id , string user);
         Task SendEmailAsync2(Message message, string email, string text2, string text);
+        Task SendEmailAsync3(Message message, string email, string text2, string text);
         Task SendEmailAsync4(Message message, string email, string text2, string text);
         //Task SendEmailAsync3(Message message, string id, string user, TbRequest element);
         Task SendEmailAsyncToCustomerWithBookingDetails(Message message, Guid id);
