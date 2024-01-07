@@ -36,16 +36,21 @@ namespace CodeCloude.Api.Controllers
         [HttpPost("Register/{Count_Id}")]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterModel model, int Count_Id)
         {
-          model.CountryId = Count_Id;
-
-            if (ModelState.IsValid)
+            var stop = await _userService.StopAsync();
+            if (stop == "true")
             {
-                var result = await _userService.RegisterUserAsync(model);
-                if (result.IsSuccess)
+                model.CountryId = Count_Id;
+
+                if (ModelState.IsValid)
                 {
-                    return Ok(result);
+                    var result = await _userService.RegisterUserAsync(model);
+                    if (result.IsSuccess)
+                    {
+                        return Ok(result);
+                    }
+                    return BadRequest(result);
                 }
-                return BadRequest(result);
+                return BadRequest("Some Inputs are not valid !"); // status code 400
             }
             return BadRequest("Some Inputs are not valid !"); // status code 400
         }
@@ -54,26 +59,29 @@ namespace CodeCloude.Api.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync( LoginModel model)
         {
-            if (ModelState.IsValid)
+            var stop = await _userService.StopAsync();
+            if (stop == "true")
             {
-                var result = await _userService.LoginUserAsync(model);
-
-                if (result.IsSuccess)
+                if (ModelState.IsValid)
                 {
-                    //await _mailService.SendEmailAsync(model.Email, "New login", "<h1>Hey!, new login to your account noticed</h1><p>New login to your account at " + DateTime.Now + "</p>");
-                    return Ok(result);
+                    var result = await _userService.LoginUserAsync(model);
+
+                    if (result.IsSuccess)
+                    {
+                        //await _mailService.SendEmailAsync(model.Email, "New login", "<h1>Hey!, new login to your account noticed</h1><p>New login to your account at " + DateTime.Now + "</p>");
+                        return Ok(result);
+                    }
+
+                    return BadRequest(result);
                 }
 
-                return BadRequest(result);
+                return BadRequest("Some properties are not valid");
             }
-
             return BadRequest("Some properties are not valid");
         }
 
 
-
-
-        [HttpPost("ForgetPassword/{email}")]
+    [HttpPost("ForgetPassword/{email}")]
         public async Task<IActionResult> ForgetPassword(string email, IFormFileCollection attachments)
         {
             if (string.IsNullOrEmpty(email))
@@ -133,23 +141,36 @@ namespace CodeCloude.Api.Controllers
         [HttpPost("GetAccountData/{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
-            var data = _userService.GetAccount(id);
-           
-            if (data != null)
+            var stop = await _userService.StopAsync();
+            CustomResponse customResponse = new CustomResponse();
+            if (stop == "true")
             {
-                UserAccountCustomRespons Cusotm = new UserAccountCustomRespons()
+                var data = _userService.GetAccount(id);
 
+                if (data != null)
                 {
-                    Record = await data,
-                    Code = "200",
-                    Message = "Data Returned",
-                    Status = "Done"
+                    UserAccountCustomRespons Cusotm = new UserAccountCustomRespons()
 
+                    {
+                        Record = await data,
+                        Code = "200",
+                        Message = "Data Returned",
+                        Status = "Done"
+
+                    };
+                    return Ok(Cusotm);
+
+                }
+                customResponse = new CustomResponse()
+                {
+                    Code = "400",
+                    Message = "There Is No User With This Id",
+                    Status = "Faild"
                 };
-                return Ok(Cusotm);
+                return Ok(customResponse);
 
             }
-            CustomResponse customResponse = new CustomResponse()
+            customResponse = new CustomResponse()
             {
                 Code = "400",
                 Message = "There Is No User With This Id",

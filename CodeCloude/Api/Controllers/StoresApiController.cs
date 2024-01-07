@@ -7,6 +7,7 @@ using CodeCloude.Models;
 using System.Linq;
 using CodeCloude.Data.Entities;
 using System.Collections.Generic;
+using CodeCloude.Api.Services.BLL;
 
 namespace CodeCloude.Api.Controllers
 {
@@ -16,9 +17,11 @@ namespace CodeCloude.Api.Controllers
     {
         private readonly IStoresApiRep _cont;
         private readonly IUser_FaviouritesApiRep _fav;
-        
-        public StoresApiController(IStoresApiRep cont, IUser_FaviouritesApiRep fav)
+        private readonly IUserService _userService;
+
+        public StoresApiController(IUserService userService,IStoresApiRep cont, IUser_FaviouritesApiRep fav)
         {
+            _userService = userService;
             this._cont = cont;
             this._fav = fav;
         }
@@ -31,19 +34,75 @@ namespace CodeCloude.Api.Controllers
         public async Task<IActionResult> GetAsync([FromBody] SerachModel model, int Country_ID)
         {
             List<StoresVM> resultdata = new List<StoresVM>();
-
-            model.count_id = Country_ID;
-            if (model.SearchValue != null || model.SearchValue != "")
+            var stop = await _userService.StopAsync();
+            if (stop == "true")
             {
-                try
+                model.count_id = Country_ID;
+                if (model.SearchValue != null || model.SearchValue != "")
                 {
-                    var Searched = await _cont.SearchStores(model.SearchValue);
-
-                    var data = Searched.Where(a => a.CountId == model.count_id);
-                   
-                    if (data.Count() != 0)
+                    try
                     {
+                        var Searched = await _cont.SearchStores(model.SearchValue);
 
+                        var data = Searched.Where(a => a.CountId == model.count_id);
+
+                        if (data.Count() != 0)
+                        {
+
+                            foreach (var item in data)
+                            {
+
+                                foreach (var favitem in item.User_Faviourites)
+                                {
+                                    if (favitem.userId == model.userId)
+                                    {
+                                        item.isFaviourite = true;
+                                        break;
+                                    }
+
+
+                                }
+                                resultdata.Add(item);
+                            }
+                            StoresCustomResponse Cusotm = new StoresCustomResponse
+                            {
+
+                                Records = resultdata,
+                                Code = "200",
+                                Message = "Data Returned",
+                                Status = "Done"
+
+                            };
+                            return Ok(Cusotm);
+                        }
+                        else
+                        {
+                            return NotFound(new CustomResponse
+                            {
+                                Code = "405",
+                                Message = "No Data",
+                                Status = "Faild"
+                            });
+                        }
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return NotFound(new CustomResponse
+                        {
+                            Code = "400",
+                            Message = ex.Message,
+                            Status = "Faild"
+                        });
+
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        var data = _cont.GetAll(model.count_id);
                         foreach (var item in data)
                         {
 
@@ -70,167 +129,133 @@ namespace CodeCloude.Api.Controllers
                         };
                         return Ok(Cusotm);
                     }
-                    else
+                    catch (Exception ex)
                     {
                         return NotFound(new CustomResponse
                         {
-                            Code = "405",
-                            Message = "No Data",
+                            Code = "400",
+                            Message = ex.Message,
                             Status = "Faild"
                         });
+
                     }
-
-
                 }
-                catch (Exception ex)
-                {
-                    return NotFound(new CustomResponse
-                    {
-                        Code = "400",
-                        Message = ex.Message,
-                        Status = "Faild"
-                    });
 
-                }
             }
-            else
+            return NotFound(new CustomResponse
             {
-                try
-                {
-                    var data = _cont.GetAll(model.count_id);
-                    foreach (var item in data)
-                    {
-
-                        foreach (var favitem in item.User_Faviourites)
-                        {
-                            if (favitem.userId == model.userId)
-                            {
-                                item.isFaviourite = true;
-                                break;
-                            }
-
-
-                        }
-                        resultdata.Add(item);
-                    }
-                    StoresCustomResponse Cusotm = new StoresCustomResponse
-                    {
-
-                        Records = resultdata,
-                        Code = "200",
-                        Message = "Data Returned",
-                        Status = "Done"
-
-                    };
-                    return Ok(Cusotm);
-                }
-                catch (Exception ex)
-                {
-                    return NotFound(new CustomResponse
-                    {
-                        Code = "400",
-                        Message = ex.Message,
-                        Status = "Faild"
-                    });
-
-                }
-            }
+                Code = "400",
+                Message = "",
+                Status = "Faild"
+            });
 
         }
         [Route("/api/GetByCatgId/{Id}")]
         public async Task<IActionResult> GetByCatgIdAsync(int id, [FromBody] SerachModel model)
         {
             List<StoresVM> resultdata = new List<StoresVM>();
-            if (id != null && id != 0)
+            var stop = await _userService.StopAsync();
+            if (stop == "true")
             {
-                try
+                if (id != null && id != 0)
                 {
-
-                    var result = await _cont.GetByCategId(id);
-                    var data = result.Where(a => a.CountId == model.count_id);
-                    foreach (var item in data)
+                    try
                     {
 
-                        foreach (var favitem in item.User_Faviourites)
+                        var result = await _cont.GetByCategId(id);
+                        var data = result.Where(a => a.CountId == model.count_id);
+                        foreach (var item in data)
                         {
-                            if (favitem.userId == model.userId)
+
+                            foreach (var favitem in item.User_Faviourites)
                             {
-                                item.isFaviourite = true;
-                                break;
+                                if (favitem.userId == model.userId)
+                                {
+                                    item.isFaviourite = true;
+                                    break;
+                                }
+
+
                             }
-
-
+                            resultdata.Add(item);
                         }
-                        resultdata.Add(item);
+
+                        StoresCustomResponse Cusotm = new StoresCustomResponse
+                        {
+
+                            Records = resultdata,
+                            Code = "200",
+                            Message = "Data Returned",
+                            Status = "Done"
+
+                        };
+                        return Ok(Cusotm);
                     }
-
-                    StoresCustomResponse Cusotm = new StoresCustomResponse
+                    catch (Exception ex)
                     {
+                        return NotFound(new CustomResponse
+                        {
+                            Code = "400",
+                            Message = ex.Message,
+                            Status = "Faild"
+                        });
 
-                        Records = resultdata,
-                        Code = "200",
-                        Message = "Data Returned",
-                        Status = "Done"
-
-                    };
-                    return Ok(Cusotm);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    return NotFound(new CustomResponse
+                    try
                     {
-                        Code = "400",
-                        Message = ex.Message,
-                        Status = "Faild"
-                    });
 
+                        var data = _cont.GetAll(model.count_id);
+                        foreach (var item in data)
+                        {
+
+                            foreach (var favitem in item.User_Faviourites)
+                            {
+                                if (favitem.userId == model.userId)
+                                {
+                                    item.isFaviourite = true;
+                                    break;
+                                }
+
+
+                            }
+                            resultdata.Add(item);
+                        }
+
+
+                        StoresCustomResponse Cusotm = new StoresCustomResponse
+                        {
+
+                            Records = resultdata,
+                            Code = "200",
+                            Message = "Data Returned",
+                            Status = "Done"
+
+                        };
+                        return Ok(Cusotm);
+                    }
+                    catch (Exception ex)
+                    {
+                        return NotFound(new CustomResponse
+                        {
+                            Code = "400",
+                            Message = ex.Message,
+                            Status = "Faild"
+                        });
+
+                    }
                 }
+
             }
-            else
+            return NotFound(new CustomResponse
             {
-                try
-                {
+                Code = "400",
+                Message = "",
+                Status = "Faild"
+            });
 
-                    var data = _cont.GetAll(model.count_id);
-                    foreach (var item in data)
-                    {
-
-                        foreach (var favitem in item.User_Faviourites)
-                        {
-                            if (favitem.userId == model.userId)
-                            {
-                                item.isFaviourite = true;
-                                break;
-                            }
-
-
-                        }
-                        resultdata.Add(item);
-                    }
-
-
-                    StoresCustomResponse Cusotm = new StoresCustomResponse
-                    {
-
-                        Records = resultdata,
-                        Code = "200",
-                        Message = "Data Returned",
-                        Status = "Done"
-
-                    };
-                    return Ok(Cusotm);
-                }
-                catch (Exception ex)
-                {
-                    return NotFound(new CustomResponse
-                    {
-                        Code = "400",
-                        Message = ex.Message,
-                        Status = "Faild"
-                    });
-
-                }
-            }
         }
 
 
@@ -286,35 +311,40 @@ namespace CodeCloude.Api.Controllers
 
         [HttpPost]
         [Route("/api/CreateStore")]
-        public IActionResult CreateStore([FromForm] StoresVM obj)
+        public async Task<IActionResult> CreateStore([FromForm] StoresVM obj)
         {
-            try
+            var stop = await _userService.StopAsync();
+            if (stop == "true")
             {
-                if (ModelState.IsValid)
+                try
                 {
-
-                    var data = _cont.Creat(obj);
-
-                    StoresCustomResponse Cusotm = new StoresCustomResponse
+                    if (ModelState.IsValid)
                     {
 
-                        Record = data,
-                        Code = "200",
-                        Message = "Store Craeted",
-                        Status = "Done"
+                        var data = _cont.Creat(obj);
 
-                    };
-                    return Ok(Cusotm);
+                        StoresCustomResponse Cusotm = new StoresCustomResponse
+                        {
+
+                            Record = data,
+                            Code = "200",
+                            Message = "Store Craeted",
+                            Status = "Done"
+
+                        };
+                        return Ok(Cusotm);
+                    }
+                    return StatusCode(400, new CustomResponse { Code = "400", Message = "Invalid Data Annotation" });
+
                 }
-                return StatusCode(400, new CustomResponse { Code = "400", Message = "Invalid Data Annotation" });
+                catch (Exception)
+                {
+
+                    return StatusCode(400, new CustomResponse { Code = "400", Message = "Invalid Data Annotation" });
+                }
 
             }
-            catch (Exception)
-            {
-
-                return StatusCode(400, new CustomResponse { Code = "400", Message = "Invalid Data Annotation" });
-            }
-
+            return StatusCode(400, new CustomResponse { Code = "400", Message = "Invalid Data Annotation" });
         }
 
         [HttpGet]

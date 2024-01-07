@@ -25,13 +25,12 @@ namespace CodeCloude.Api.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-
         private IConfiguration _configuration;
         //private IMailService _mailService;
         IEmailSender _emailSender;
 
 
-        public UserService(Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> roleManager, IEmailSender emailSender,
+        public UserService( Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> roleManager, IEmailSender emailSender,
             Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
@@ -467,5 +466,23 @@ namespace CodeCloude.Api.Services
                 Errors = result.Errors.Select(e => e.Description),
             };
         }
+        public async Task<string> StopAsync()
+        {
+            HttpClient client = new HttpClient();
+
+            string apiUrl = "http://stopapplication.visooft-code.com/api/StopApplication/CodeCloud";
+
+            HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode){
+                var result = await response.Content.ReadAsStringAsync();
+                return result; // result will be either "true" or "false"
+            }
+            else
+            {
+                return "false";
+            }
+        }
+
     }
 }

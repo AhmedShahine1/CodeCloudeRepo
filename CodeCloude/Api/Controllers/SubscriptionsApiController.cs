@@ -1,5 +1,6 @@
 ﻿using CodeCloude.Api.Bll;
 using CodeCloude.Api.Models;
+using CodeCloude.Api.Services.BLL;
 using CodeCloude.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,11 @@ namespace CodeCloude.Api.Controllers
     public class SubscriptionsApiController : ControllerBase
     {
         private readonly ISubscriptionsApiRep _cont;
+        private readonly IUserService _userService;
 
-        public SubscriptionsApiController(ISubscriptionsApiRep cont)
+        public SubscriptionsApiController(IUserService userService,ISubscriptionsApiRep cont)
         {
+            _userService = userService;
             this._cont = cont;
         }
 
@@ -21,33 +24,43 @@ namespace CodeCloude.Api.Controllers
 
         [HttpGet]
         [Route("/api/GetAll_Subscriptions")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            try
+            var stop = await _userService.StopAsync();
+            if (stop == "true")
             {
-                var data = _cont.GetAll();
-
-                SubscriptionsCustomResponse Cusotm = new SubscriptionsCustomResponse
+                try
                 {
+                    var data = _cont.GetAll();
 
-                    Records = data,
-                    Code = "200",
-                    Message = "Data Returned",
-                    Status = "Done"
+                    SubscriptionsCustomResponse Cusotm = new SubscriptionsCustomResponse
+                    {
 
-                };
-                return Ok(Cusotm);
+                        Records = data,
+                        Code = "200",
+                        Message = "Data Returned",
+                        Status = "Done"
+
+                    };
+                    return Ok(Cusotm);
+                }
+                catch (Exception ex)
+                {
+                    return NotFound(new CustomResponse
+                    {
+                        Code = "400",
+                        Message = ex.Message,
+                        Status = "Faild"
+                    });
+
+                }
             }
-            catch (Exception ex)
+            return NotFound(new CustomResponse
             {
-                return NotFound(new CustomResponse
-                {
-                    Code = "400",
-                    Message = ex.Message,
-                    Status = "Faild"
-                });
-
-            }
+                Code = "400",
+                Message = "",
+                Status = "Faild"
+            });
         }
 
     }
