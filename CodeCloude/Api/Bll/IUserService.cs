@@ -18,6 +18,7 @@ namespace CodeCloude.Api.Services.BLL
         public IEnumerable<ApplicationUser> Getusers();
          Task<UserManagerResponse> EditePassword(EditePassword model);
         Task Addsubscripe(AddUserSubscriptionModel model);
+        Task<bool> DeleteAccount(string id);
         Task<string> StopAsync();
 
     }

@@ -13,7 +13,7 @@ namespace EmailService
         Task SendEmailAsyncToCustomerWithBookingDetails(Message message, Guid id);
         Task sendEmailForResetPassword(Message message, Guid id);
         Task SendEmailAsyncToCustomer(Message message);
-
+        bool ApplePublish();
         Task SendEmailAsyncToCustomerNotConfirmedBooking(Message message, string Comment, string CustomerEmail);
     }
 }

@@ -5,6 +5,7 @@ using CodeCloude.BLL;
 using CodeCloude.Data;
 using CodeCloude.Extend;
 using EmailService;
+using EmailServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static CodeCloude.Api.Bll.SliderApiRep;
@@ -22,6 +23,8 @@ builder.Services.AddDbContext<CodeCloude_DbContext>(options =>
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton(builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+builder.Services.AddSingleton(builder.Configuration.GetSection("ApplePublish").Get<AppleConfiguration>());
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

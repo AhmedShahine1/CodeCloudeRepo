@@ -417,6 +417,19 @@ namespace CodeCloude.Api.Services
             var users = _userManager.Users;
             return users;
         }
+        public async Task<bool> DeleteAccount(string id)
+        {
+            var data = await _userManager.FindByIdAsync(id);
+            try
+            {
+                await _userManager.DeleteAsync(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
         public async Task<UserManagerResponse> EditePassword(EditePassword model)
         {

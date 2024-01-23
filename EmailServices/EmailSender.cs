@@ -1,4 +1,5 @@
 ﻿
+using EmailServices;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
@@ -12,15 +13,19 @@ namespace EmailService
     public class EmailSender : IEmailSender
     {
         private readonly EmailConfiguration _emailConfig;
-
+        private readonly AppleConfiguration _apple;
         private readonly IConfiguration _configuration;
 
-        public EmailSender(EmailConfiguration emailConfig , IConfiguration configuration)
+        public EmailSender(AppleConfiguration apple, EmailConfiguration emailConfig , IConfiguration configuration)
         {
+            _apple = apple;
             _emailConfig = emailConfig;
             _configuration = configuration;
         }
-
+        public bool ApplePublish()
+        {
+            return _apple.IsLive;
+        }
         public void SendEmail(Message message, string id)
         {
             var emailMessage = CreateEmailMessage(message, id , "");

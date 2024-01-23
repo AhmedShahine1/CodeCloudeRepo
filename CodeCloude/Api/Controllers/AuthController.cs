@@ -7,6 +7,7 @@ using CodeCloude.Api.Services.BLL;
 using Microsoft.AspNetCore.Identity;
 using CodeCloude.Extend;
 using EmailService;
+using EmailServices;
 
 namespace CodeCloude.Api.Controllers
 {
@@ -24,7 +25,7 @@ namespace CodeCloude.Api.Controllers
 
         public AuthController(IUserService userService ,IConfiguration configuration, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
- 
+
             _userService = userService;
             //_mailService = mailService;
             _configuration = configuration;
@@ -55,7 +56,6 @@ namespace CodeCloude.Api.Controllers
             return BadRequest("Some Inputs are not valid !"); // status code 400
         }
 
-
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync( LoginModel model)
         {
@@ -80,8 +80,7 @@ namespace CodeCloude.Api.Controllers
             return BadRequest("Some properties are not valid");
         }
 
-
-    [HttpPost("ForgetPassword/{email}")]
+        [HttpPost("ForgetPassword/{email}")]
         public async Task<IActionResult> ForgetPassword(string email, IFormFileCollection attachments)
         {
             if (string.IsNullOrEmpty(email))
@@ -228,10 +227,34 @@ namespace CodeCloude.Api.Controllers
 
         }
 
+        [HttpPost("DeleteAccount/{id}")]
+        public async Task<IActionResult> DeleteAccount(string id)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var data = await _userService.DeleteAccount(id);
+
+                if (data)
+                {
+                    return Ok("Success Delete Account");
+                }
+
+                return BadRequest("Failed Delete Account");
+            }
+
+            return BadRequest("Some properties are not valid");
+
+
+        }
+
         [HttpGet("ApplePayActive")]
         public IActionResult ApplePayActive()
         {
-            return Ok(true);
+            bool isLive = _emailSender.ApplePublish();
+            return Ok(isLive);
         }
+
+
     }
 }
